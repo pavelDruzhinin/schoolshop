@@ -5,7 +5,7 @@ namespace Shop.Models
 {
     public class Product
     {
-        private Product()
+        public Product()
         {
 
         }
