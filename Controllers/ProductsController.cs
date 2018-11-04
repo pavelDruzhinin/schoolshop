@@ -37,6 +37,22 @@ namespace Shop.Controllers
             return View(product);
         }
 
+        [HttpGet]
+        [Route("delete/{id:int}", Name ="ProductDeleteRoute")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var product = await _db.Products.FirstOrDefaultAsync(x => x.Id == id);
+
+            if (product != null)
+            {
+                _db.Products.Remove(product);
+                await _db.SaveChangesAsync();
+            }
+
+            return RedirectToAction("Index");
+        }
+
+
         [HttpPost]
         [Route("save")]
         public async Task<IActionResult> Save(Product product)
