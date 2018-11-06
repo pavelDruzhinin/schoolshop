@@ -1,30 +1,20 @@
-﻿FROM microsoft/dotnet:2.1-sdk AS build
-
+﻿FROM microsoft/dotnet:2.1-aspnetcore-runtime AS base
 WORKDIR /app
+EXPOSE 50293
+EXPOSE 44371
 
+FROM microsoft/dotnet:2.1-sdk AS build
+WORKDIR /src
+COPY Shop.csproj .
+RUN dotnet restore "Shop.csproj"
+COPY . .
+RUN dotnet build "Shop.csproj" -c Release -o /app
 
-# copy csproj and restore as distinct layers
+FROM build AS publish
+RUN dotnet publish "Shop.csproj" -c Release -o /app
 
-COPY *.sln .
-
-COPY *.csproj .
-
-RUN dotnet restore
-
-
-# copy everything else and build app
-
-COPY . ./schoolShop/
-
+FROM base AS final
 WORKDIR /app
-
-RUN dotnet publish -c Release -o out
-
-
-FROM microsoft/dotnet:2.1-aspnetcore-runtime AS runtime
-
-WORKDIR /app
-
-COPY --from=build /app/out ./
-
-ENTRYPOINT ["dotnet", "shop.dll"]
+COPY --from=publish /app .
+VOLUME /App_Data/:/app/App_Data
+ENTRYPOINT ["dotnet", "Shop.dll"]
