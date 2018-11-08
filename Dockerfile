@@ -16,5 +16,5 @@ RUN dotnet publish "Shop.csproj" -c Release -o /app
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app .
-VOLUME /App_Data/:/app/App_Data
+VOLUME ./App_Data:/app/App_Data
 ENTRYPOINT ["dotnet", "Shop.dll"]

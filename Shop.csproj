@@ -14,6 +14,7 @@
 
   <ItemGroup>
     <Folder Include="Data\Mappings\" />
+    <Folder Include="App_Data\" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="shop.db" />
