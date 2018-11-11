@@ -28,8 +28,8 @@
                 <td>@product.Name</td>
                 <td>@product.Price</td>
                 <td>
+                    <a href="products/@(product.Id)/addToCart" class="btn btn-info">Добавить в корзину</a>
                     <a href="products/edit/@(product.Id)" class="btn btn-info">Редактировать</a>
-                    @*@Html.ActionLink("Удалить", "Delete", htmlAttributes: new { @class = "btn btn-danger" }, routeValues: new { id = product.Id })*@
                     <a href="products/delete/@(product.Id)" class="btn btn-danger">Удалить</a>
                 </td>
             </tr>

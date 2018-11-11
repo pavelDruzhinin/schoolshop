@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Shop.Data;
+using Shop.Models;
 using Shop.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -30,7 +31,9 @@ namespace Shop.Controllers
             var ordersViewModel = orders
                 .Select(order => new OrderViewModel
                 {
+                    Id = order.Id,
                     Number = order.Number,
+                    Status = order.Status,
                     Items = order.Items
                         .Select(item => new OrderItemViewModel
                         {
@@ -41,6 +44,21 @@ namespace Shop.Controllers
                 });
 
             return View(ordersViewModel);
+        }
+
+        [HttpGet]
+        [Route("{orderId:int}/payed")]
+        public async Task<ActionResult<bool>> Payed(int orderId)
+        {
+            var order = await _db.Orders.FirstOrDefaultAsync(x => x.Id == orderId);
+
+            if (order == null)
+                return false;
+
+            order.Status = OrderStatus.Payed;
+            await _db.SaveChangesAsync();
+
+            return true;
         }
     }
 }
