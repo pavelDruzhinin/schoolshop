@@ -1,9 +1,11 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Shop.Data;
 using Shop.Models;
+using Shop.ViewModels;
 
 namespace Shop.Controllers
 {
@@ -21,7 +23,7 @@ namespace Shop.Controllers
         [Route("")]
         public async Task<IActionResult> Index()
         {
-            var products = await _db.Products.ToListAsync();
+            var products = await _db.Products.Include(x=>x.Category).ToListAsync();
 
             return View(products);
         }
@@ -31,11 +33,19 @@ namespace Shop.Controllers
         [Route("edit/{id:int}")]
         public async Task<IActionResult> Product(int? id)
         {
-            if (!id.HasValue)
-                return View();
+            var viewModel = new ProductViewModel
+            { 
+                Categories = await _db.Categories.Select(x=> new SelectListItem{
+                    Text = x.Name,
+                    Value = x.Id.ToString()
+                }).ToListAsync()
+            };
 
-            var product = await _db.Products.FirstOrDefaultAsync(x => x.Id == id);
-            return View(product);
+            if (!id.HasValue)
+                return View(viewModel);
+
+            viewModel.Product = await _db.Products.FirstOrDefaultAsync(x => x.Id == id);
+            return View(viewModel);
         }
 
         [HttpGet]

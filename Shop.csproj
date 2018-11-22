@@ -15,8 +15,10 @@
   <ItemGroup>
     <Folder Include="Data\Mappings\" />
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Categories\" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="shop.db" />
+    <None Remove="App_Data\shop.db" />
   </ItemGroup>
 </Project>
