@@ -4,7 +4,12 @@ services:
 
       web:
         build: .
+        dockerfile: web.Dockerfile
         volumes: 
            - ${DB_PATH_HOST}:${DB_PATH_CONTAINER}
         ports:
            - 5001:80
+      redis:
+        image: redis:latest
+        deploy:
+            replicas: 1

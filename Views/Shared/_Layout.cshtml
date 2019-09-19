@@ -47,11 +47,12 @@
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; 2018 - Shop</p>
+            <p>&copy; @DateTime.Now.Year - Shop</p>
         </footer>
     </div>
 
     <environment include="Development">
+        <script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
         <script src="~/lib/jquery/dist/jquery.js"></script>
         <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
         <script src="~/js/site.js" asp-append-version="true"></script>

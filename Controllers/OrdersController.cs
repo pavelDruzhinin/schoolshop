@@ -3,8 +3,6 @@ using Microsoft.EntityFrameworkCore;
 using Shop.Data;
 using Shop.Models;
 using Shop.ViewModels;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -24,8 +22,9 @@ namespace Shop.Controllers
         public async Task<IActionResult> Index()
         {
             var orders = await _db.Orders
-                .Include(x => x.Items)
-                .ThenInclude(x => x.Product)
+                                  .Include(x => x.Items)
+                                  .ThenInclude(x => x.Product)
+                                  .OrderByDescending(x=>x.Id)
                 .ToListAsync();
 
             var ordersViewModel = orders
